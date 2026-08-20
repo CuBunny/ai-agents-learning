@@ -1,0 +1,44 @@
+Код декоратора (Тулза) это просто автоматическая упаковка обычной Python-функции в понятное описание инструмента для AI-агента.
+
+def tool(func):
+    """
+    Декоратор, создающий экземпляр Tool из заданной функции.
+    """
+    # Получение сигнатуры функции
+    signature = inspect.signature(func)
+    
+    # Извлеките пары (param_name, param_annotation) для входных данных
+    arguments = []
+    for param in signature.parameters.values():
+        annotation_name = (
+            param.annotation.__name__ 
+            if hasattr(param.annotation, '__name__') 
+            else str(param.annotation)
+        )
+        arguments.append((param.name, annotation_name))
+    
+    # Определите аннотацию возврата
+    return_annotation = signature.return_annotation
+    if return_annotation is inspect._empty:
+        outputs = "No return annotation"
+    else:
+        outputs = (
+            return_annotation.__name__ 
+            if hasattr(return_annotation, '__name__') 
+            else str(return_annotation)
+        )
+    
+    # Используйте строку документации функции в качестве описания (по умолчанию, если None)
+    description = func.__doc__ or "Описание не представлено."
+    
+    # Имя функции становится именем Инструмента
+    name = func.__name__
+    
+    # Возвращаем новый экземпляр Инструмента
+    return Tool(
+        name=name, 
+        description=description, 
+        func=func, 
+        arguments=arguments, 
+        outputs=outputs
+    )
