@@ -10,7 +10,7 @@ def calculator(a: int, b: int) -> int:
 print(calculator.to_string())
 
 
-# @tool превращает обычную функцию в Tool в PYTHON.
+# @tool это  decorator (обёртка)  и он превращает обычную функцию в Tool (PYTHON).
 #
 # После этого calculator содержит информацию:
 # - имя инструмента
