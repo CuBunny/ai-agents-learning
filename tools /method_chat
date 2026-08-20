@@ -1,0 +1,9 @@
+output = client.chat.completions.create(
+    messages=[
+        {"role": "user", "content": "Столица Франции - это"},
+    ],
+    stream=False,
+    max_tokens=1024, #/ограничивает вывод
+    extra_body={'thinking': {'type': 'disabled'}},
+)
+print(output.choices[0].message.content) 
